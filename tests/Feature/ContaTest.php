@@ -65,30 +65,30 @@ class ContaTest extends TestCase
         $this->assertEquals(400, $response->original['status']);
     }
 
-    /**
-     * Uma conta deve ser atualizada
-     * /contas/id [PUT]
-     * @return void
-     */
-    public function testShouldUpdateConta(){
-        $conta = Conta::factory()->create()->toArray();
-        $conta['valor'] = 50;
+    // /**
+    //  * Uma conta deve ser atualizada
+    //  * /contas/id [PUT]
+    //  * @return void
+    //  */
+    // public function testShouldUpdateConta(){
+    //     $conta = Conta::factory()->create()->toArray();
+    //     $conta['valor'] = 50;
 
-        $response = $this->call('PUT', 'api/contas/'.$conta['id'], $conta);
-        $this->assertEquals(200, $response->original['status']);
-    }
+    //     $response = $this->call('PUT', 'api/contas/'.$conta['id'], $conta);
+    //     $this->assertEquals(200, $response->original['status']);
+    // }
     
-    /**
-     * Não deve atualizar uma conta, pois ela não existe
-     * /contas/id [PUT]
-     * @return void
-     */
-    public function testNotShouldUpdateConta(){
-        $conta = Conta::factory()->make()->toArray();
+    // /**
+    //  * Não deve atualizar uma conta, pois ela não existe
+    //  * /contas/id [PUT]
+    //  * @return void
+    //  */
+    // public function testNotShouldUpdateConta(){
+    //     $conta = Conta::factory()->make()->toArray();
 
-        $response = $this->call('PUT', 'api/contas/9999999', $conta);
-        $this->assertEquals(400, $response->original['status']);
-    }
+    //     $response = $this->call('PUT', 'api/contas/9999999', $conta);
+    //     $this->assertEquals(400, $response->original['status']);
+    // }
 
     /**
      * Uma conta deve ser deletada
@@ -102,7 +102,7 @@ class ContaTest extends TestCase
         $this->assertEquals(200, $response->original['status']);
     }
     /**
-     * Não deve delete uma conta, pois ela não existe
+     * Não deve deletar uma conta, pois ela não existe
      * /contas/id [DELETE]
      * @return void
      */
