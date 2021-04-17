@@ -6,6 +6,8 @@ use Illuminate\Support\ServiceProvider;
 
 use App\Repositories\Contract\ContaRepositoryInterface;
 use App\Repositories\ContaRepository;
+use App\Repositories\Contract\TransacaoRepositoryInterface;
+use App\Repositories\TransacaoRepository;
 
 class AppRepositoryProvider extends ServiceProvider
 {
@@ -19,6 +21,10 @@ class AppRepositoryProvider extends ServiceProvider
         $this->app->bind(
             ContaRepositoryInterface::class,
             ContaRepository::class,
+        );
+        $this->app->bind(
+            TransacaoRepositoryInterface::class,
+            TransacaoRepository::class,
         );
     }
 

@@ -96,6 +96,64 @@ class ContaService implements ContaServiceInterface
   }
 
   /**
+   * Método para creditar valor em conta
+   * @param array $transacao
+   * @return array
+   */
+  public function creditoEmConta(array $transacao): array {
+    $contaExist = $this->repository->findContaByNumero($transacao['numeroConta']);
+    if (!empty($contaExist)) {
+      $updateConta = [
+        'valor' => $contaExist['valor'] + $transacao['valor'],
+        'numero' => $contaExist['numero'],
+      ];
+      $this->update($updateConta, $contaExist['id']);
+      $contaUpdated = $this->repository->findById($contaExist['id']);
+      return [
+        'status' => 200,
+        'message' => 'Saldo atualizado',
+        'conta' => $contaUpdated,
+      ];
+    }
+    return [
+      'status' => 400,
+      'message' => 'Conta não encontrada',
+    ];
+  }
+
+  /**
+   * Método para debita valor em conta
+   * @param array $transacao
+   * @return array
+   */
+  public function debitoEmConta(array $transacao): array {
+    $contaExist = $this->repository->findContaByNumero($transacao['numeroConta']);
+    if (!empty($contaExist)) {
+      if ($contaExist['valor'] - $transacao['valor'] > 0) {
+        $updateConta = [
+          'valor' => $contaExist['valor'] - $transacao['valor'],
+          'numero' => $contaExist['numero'],
+        ];
+        $this->update($updateConta, $contaExist['id']);
+        $contaUpdated = $this->repository->findById($contaExist['id']);
+        return [
+          'status' => 200,
+          'message' => 'Saldo atualizado',
+          'conta' => $contaUpdated,
+        ];
+      }
+      return [
+        'status' => 400,
+        'message' => 'Saldo insuficiente',
+      ];
+    }
+    return [
+      'status' => 400,
+      'message' => 'Conta não encontrada',
+    ];
+  }
+
+  /**
    * Atualiza uma conta
    * @param array $conta
    * @param int $id
@@ -114,7 +172,7 @@ class ContaService implements ContaServiceInterface
       }
       return [
         'status' => 400,
-        'message' => 'Não encontrada',
+        'message' => 'Conta não encontrada',
       ];
     } catch (\Throwable $th) {
       return [

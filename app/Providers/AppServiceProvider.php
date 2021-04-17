@@ -6,6 +6,9 @@ use Illuminate\Support\ServiceProvider;
 use App\Services\Contract\ContaServiceInterface;
 use App\Services\ContaService;
 use App\Http\Resources\ContaResource;
+use App\Services\Contract\TransacaoServiceInterface;
+use App\Services\TransacaoService;
+use App\Http\Resources\TransacaoResource;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -20,6 +23,10 @@ class AppServiceProvider extends ServiceProvider
             ContaServiceInterface::class,
             ContaService::class,
         );
+        $this->app->bind(
+            TransacaoServiceInterface::class,
+            TransacaoService::class,
+        );
     }
 
     /**
@@ -30,5 +37,6 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         ContaResource::withoutWrapping();
+        TransacaoResource::withoutWrapping();
     }
 }

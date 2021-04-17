@@ -2,11 +2,11 @@
 
 namespace App\Http\Resources;
 
+
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
-class ContaResource extends ResourceCollection
+class TransacaoResource extends ResourceCollection
 {
-    
     /**
      * Transform the resource into an array.
      *
@@ -28,6 +28,6 @@ class ContaResource extends ResourceCollection
     }
 
     public static function getInstance($data){
-        return (new ContaResource($data));
+        return (new TransacaoResource($data));
     }
 }

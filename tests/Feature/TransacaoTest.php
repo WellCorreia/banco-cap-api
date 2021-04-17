@@ -51,14 +51,14 @@ class TransacaoTest extends TestCase
     public function testShouldCreateATransactionOfCredit() {
         $conta = Conta::factory()->create(['valor' => 50])->toArray();
         $transacao = Transacao::factory([
-            'conta_id' => $conta['id'],
+            'numeroConta' => $conta['numero'],
             'valor' => 25,
             'tipo' => 'deposito'
-            ])->make()->toArray;
+            ])->make()->toArray();
 
         $response = $this->call('POST', 'api/transacoes', $transacao);
-        $this->assertEquals($conta['valor'] + 25, $response->original['transacao']['valor']);
-        $this->assertEquals(201, $response->original['status']);
+        $this->assertEquals($conta['valor'] + 25, $response->original['conta']['valor']);
+        $this->assertEquals(200, $response->original['status']);
     }
 
     /**
@@ -69,14 +69,14 @@ class TransacaoTest extends TestCase
     public function testShouldCreateATransactionOfDebit() {
         $conta = Conta::factory()->create(['valor' => 50])->toArray();
         $transacao = Transacao::factory([
-            'conta_id' => $conta['id'],
+            'numeroConta' => $conta['numero'],
             'valor' => 25,
             'tipo' => 'saque'
-            ])->make()->toArray;
+            ])->make()->toArray();
 
         $response = $this->call('POST', 'api/transacoes', $transacao);
-        $this->assertEquals($conta['valor'] - 25, $response->original['transacao']['valor']);
-        $this->assertEquals(201, $response->original['status']);
+        $this->assertEquals($conta['valor'] - 25, $response->original['conta']['valor']);
+        $this->assertEquals(200, $response->original['status']);
     }
 
     /**
@@ -87,10 +87,10 @@ class TransacaoTest extends TestCase
     public function testNotShouldCreateATransaction() {
         Conta::factory()->create()->toArray();
         $transacao = Transacao::factory([
-            'conta_id' => 5154,
+            'numeroConta' => '958884',
             'valor' => 25,
             'tipo' => 'saque'
-            ])->make()->toArray;
+            ])->make()->toArray();
 
         $response = $this->call('POST', 'api/transacoes', $transacao);
         $this->assertEquals(400, $response->original['status']);
