@@ -62,7 +62,7 @@ $ cp .env.testing.example .env.testing
 
 Após esse comando deve executar o comando para instalação das dependencias do projeto.
 ```bash
-$ cp composer install
+$ composer install
 ```
 
 ### Testes
