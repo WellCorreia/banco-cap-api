@@ -2,9 +2,9 @@
 
 namespace App\Http\Resources;
 
-use Illuminate\Http\Resources\Json\ResourceCollection;
+use Illuminate\Http\Resources\Json\JsonResource;
 
-class ContaResource extends ResourceCollection
+class ContaResource extends JsonResource
 {
     
     /**
@@ -16,9 +16,7 @@ class ContaResource extends ResourceCollection
     public function toArray($request)
     {
         if (!empty($this['message']) && $this['status'] != 500) {
-            return [
-                $this->collection,
-            ];
+            return parent::toArray($request);
         }
 
         return [

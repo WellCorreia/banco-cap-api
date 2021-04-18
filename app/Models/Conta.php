@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+use App\Models\Transacao;
 class Conta extends Model
 {
     use HasFactory;
@@ -24,5 +25,10 @@ class Conta extends Model
         'numero',
         'valor',
     ];
+
+    public function transacoes()
+    {
+        return $this->hasMany(Transacao::class, 'conta_id')->orderBy('created_at', 'desc');
+    }
 
 }

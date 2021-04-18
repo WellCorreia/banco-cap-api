@@ -52,6 +52,18 @@ class ContaController extends Controller
         return ContaResource::getInstance($response)->response()->setStatusCode($response['status']);
     }
 
+    /**
+     * Display the specified resource.
+     *
+     * @param  string  $numero
+     * @return App\Http\Resources\ContaResource
+     */
+    public function findByNumeroConta($numero)
+    {
+        $response = $this->service->findByNumeroConta($numero);
+        return ContaResource::getInstance($response)->response()->setStatusCode($response['status']);
+    }
+
     // /**
     //  * Update the specified resource in storage.
     //  *

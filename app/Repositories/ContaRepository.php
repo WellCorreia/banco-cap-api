@@ -37,6 +37,7 @@ class ContaRepository implements ContaRepositoryInterface{
      */
     public function findContaByNumero(string $numero) {
         return $this->conta
+        ->with('transacoes')
         ->where('numero', $numero)
         ->first();
     }

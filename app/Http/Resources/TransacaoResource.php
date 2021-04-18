@@ -3,9 +3,9 @@
 namespace App\Http\Resources;
 
 
-use Illuminate\Http\Resources\Json\ResourceCollection;
+use Illuminate\Http\Resources\Json\JsonResource;
 
-class TransacaoResource extends ResourceCollection
+class TransacaoResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -16,9 +16,7 @@ class TransacaoResource extends ResourceCollection
     public function toArray($request)
     {
         if (!empty($this['message']) && $this['status'] != 500) {
-            return [
-                $this->collection,
-            ];
+            return parent::toArray($request);
         }
 
         return [

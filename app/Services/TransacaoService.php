@@ -27,7 +27,7 @@ class TransacaoService implements TransacaoServiceInterface
       $transacoes = $this->repository->findAll();
       return [
         'status' => 200,
-        'message' => 'Transacaos Encontradas',
+        'message' => 'Transações Encontradas',
         'transacoes' => $transacoes
       ];
     } catch (\Throwable $th) {
@@ -49,13 +49,13 @@ class TransacaoService implements TransacaoServiceInterface
       if (!empty($transacao)) {
         return [
           'status' => 200,
-          'message' => 'Transacao encontrada',
+          'message' => 'Transação encontrada',
           'transacao' => $transacao
         ];
       }
       return [
         'status' => 400,
-        'message' => 'Não encontrada',
+        'message' => 'Transação não encontrada',
       ];
     } catch (\Throwable $th) {
       return [
@@ -73,17 +73,24 @@ class TransacaoService implements TransacaoServiceInterface
   public function create(array $transacao): array {
     return DB::transaction(function () use ($transacao){
       try {
-        if ($transacao['tipo'] == 'saque') {
-          $saque = $this->contaService->debitoEmConta($transacao);
+        $contaExist = $this->contaService->findByNumeroConta($transacao['numeroConta']);
+        if ($contaExist['status'] == 200) {
+          $transactionResult = null;
+          if ($transacao['tipo'] == 'saque') {
+            $transactionResult = $this->contaService->debitoEmConta($transacao);
+          } else {
+            $transactionResult = $this->contaService->creditoEmConta($transacao);
+          }
+          $transacao['conta_id'] = $contaExist['conta']['id'];
+          $this->repository->create($transacao);
           DB::commit();
-          return $saque;
-        } else {
-          $deposito = $this->contaService->creditoEmConta($transacao);
-          DB::commit();
-          return $deposito;
+          return $transactionResult;
         }
+        return $contaExist;
+
       } catch (\Throwable $th) {
         DB::rollback();
+        dd($th->getMessage());
         return [
           'status' => 500, 
           'message' => $th->getMessage()
@@ -104,12 +111,12 @@ class TransacaoService implements TransacaoServiceInterface
         $this->repository->delete($id);
         return [
           'status' => 200,
-          'message' => 'Transacao removida',
+          'message' => 'Transação removida',
         ];
       }
       return [
         'status' => 400,
-        'message' => 'Não encontrada',
+        'message' => 'Transação não encontrada',
       ];
     } catch (\Throwable $th) {
       return [

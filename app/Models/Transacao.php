@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Models\Conta;
 
 class Transacao extends Model
 {
@@ -25,4 +26,9 @@ class Transacao extends Model
         'valor',
         'tipo',
     ];
+
+    public function conta()
+    {
+        return $this->hasOne(Conta::class, 'id', 'conta_id');
+    }
 }

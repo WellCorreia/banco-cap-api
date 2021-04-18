@@ -51,7 +51,34 @@ class ContaService implements ContaServiceInterface
       }
       return [
         'status' => 400,
-        'message' => 'Não encontrada',
+        'message' => 'Conta não encontrada',
+      ];
+    } catch (\Throwable $th) {
+      return [
+        'status' => 500, 
+        'message' => $th->getMessage()
+      ];
+    }
+  }
+
+  /**
+   * Encontra uma conta pelo numero da conta
+   * @param string $numero
+   * @return array
+   */
+  public function findByNumeroConta(string $numero): array {
+    try {
+      $conta = $this->repository->findContaByNumero($numero);
+      if (!empty($conta)) {
+        return [
+          'status' => 200,
+          'message' => 'Conta encontrada',
+          'conta' => $conta
+        ];
+      }
+      return [
+        'status' => 400,
+        'message' => 'Conta não encontrada',
       ];
     } catch (\Throwable $th) {
       return [
@@ -79,7 +106,7 @@ class ContaService implements ContaServiceInterface
         $conta = $this->repository->create($conta);
         return [
           'status' => 201,
-          'message' => 'Created conta',
+          'message' => 'Conta criada',
           'conta' => $conta
         ];
       }
@@ -199,7 +226,7 @@ class ContaService implements ContaServiceInterface
       }
       return [
         'status' => 400,
-        'message' => 'Não encontrada',
+        'message' => 'Conta não encontrada',
       ];
     } catch (\Throwable $th) {
       return [

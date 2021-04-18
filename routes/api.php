@@ -17,5 +17,6 @@ use App\Http\Controllers\TransacaoController;
 */
 
 
+Route::get('contas/numero/{numero}', [ContaController::class, 'findByNumeroConta']);
 Route::resource('contas', ContaController::class);
 Route::resource('transacoes', TransacaoController::class);
