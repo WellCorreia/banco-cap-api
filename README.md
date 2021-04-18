@@ -1,62 +1,121 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
+## Estrutura do Projeto
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+```
+banco-cap-api
+ └───
+ └───app                        # App
+      └───Console               # Contem arquivos de commands
+      └───Excptions             # Contem os exceptions criados ao decorrer do projeto
+      └───Http                  # Contem controllers, middlewares, requests e resources
+           └───Controllers      # Responsável por fazer o controle de requisições
+           └───Middleware       # Responsável por fazer o controle intermediario entre o client e o controller
+           └───Requests         # Responsável por controlar e validar os dados recebidos em cada método do controller
+           └───Resources        # Responsável por formatar os dados de retorno do método do controller
+      └───Models                # Entidades
+      └───Providers             # Serviços de controle e configuração
+      └───Respositories         # Camada responsável por acesso com o banco de dados
+      └───Services              # Camada responsável pela regra de negócio
+ └───bootstrap                  # Contem arquivo de configuração de utilização de funcionalidades do projeto (middleware, eloquent e etc.)
+ └───config                     # Contem arquivos de configuração do projeto (app, cache, cors, database e etc.)
+ └───database                   # Contem as migrations, seeders e factories
+ └───public                     # Public
+ └───resources                  # Contem arquivos de "frontend" (css, js, views(blade) e etc)
+ └───routes                     # Contem o arquivos que armazena os end-points
+ └───storage                    # Storage
+ └───tests                      # Contem os tests unitários e de integração do projeto.
+       └───Feature              # Contem os testes de integração
+       └───Unit                 # Contem os testes unitários.
+ └───vendor                     # Vendor (contem bibliotecas necessárias para o projeto funcionar)
+ └───.env.example               # Exemplo do arquivos de configuração de acesso a serviços
+ └───.env.testing.example       # Exemplo do arquivos de configuração de acesso a serviços de teste
+ └───.gitignore                 # Arquivo de configuração para evitar commitar arquivos desnecessários
+ └───composer.json              # Arquivo de configuração do projeto, definindo quais libs devem ser instaladas
+ └───LICENSE                    # Licensa do projeto (MIT)
+ └───phpunit.xml                # Arquivo de configuração do phpunit.
+ └───README.md                  # README.md.
+ └───server.php                 # Server
+ └───tests.sh                   # Arquivo com script para execução dos testes.
+ └───webpack.mix.js             # Webpack
+```
+### Decisão da Estrutura Utilizada
 
-## About Laravel
+A estrutura utilizada tem como base a estrutura base do Laravel 4.2.4, porém foi acrescentado a separação em services, repositories, resources e request. Além de interfaces para compor as camadas dos services e repositories. Isso porque não deixa a estrutura muito complexa e divide de forma para facil entendimento de cada camada.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+### Stacks Utilizadas:
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+PHP 7.4.16
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+Laravel 4.2.4
 
-## Learning Laravel
+### Instalação
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+Para preparar o código é necessário primeiramente criar os arquivos .ENVs para comunicação da aplicação com o banco de dados SQLITE e para testes. Para isso deverá ser executado esses dois comandos:
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1500 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+```bash
+$ cp .env.example .env
+```
+ e
+ 
+```bash
+$ cp .env.testing.example .env.testing
+```
 
-## Laravel Sponsors
+Após esse comando deve executar o comando para instalação das dependencias do projeto.
+```bash
+$ cp composer install
+```
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+### Testes
+Os testes foram feitos utilizados o banco de dados sqlite como base para as pesistências dos dados. Deve-se executar esse comando na raiz do projeto:
 
-### Premium Partners
+```bash
+$ sh tests.sh
+```
+Esse comando automatiza a execução dos comandos `php artisan migrate --env=testing`, `php artisan tests --env=testing`, `php artisan migrate:rollback --env=testing`. Correspontes a criar as tabelas, executar os testes e "deletar" as tabelas.
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/)**
-- **[OP.GG](https://op.gg)**
+Após a execução, o seguite resultado deverá ser retornador:
 
-## Contributing
+```
+Migrating: 2021_04_16_231514_conta
+Migrated:  2021_04_16_231514_conta (14.71ms)
+Migrating: 2021_04_17_024409_transacao
+Migrated:  2021_04_17_024409_transacao (6.54ms)
+Warning: TTY mode is not supported on Windows platform.
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+   PASS  Tests\Feature\ContaTest
+  ✓ should return all contas
+  ✓ should return conta
+  ✓ not found conta return
+  ✓ should create conta
+  ✓ not should create conta with negative value
+  ✓ should delete conta
+  ✓ not should delete conta
 
-## Code of Conduct
+   PASS  Tests\Feature\TransacaoTest
+  ✓ should return all contas
+  ✓ should return conta
+  ✓ not found transaction return
+  ✓ should create a transaction of credit
+  ✓ should create a transaction of debit
+  ✓ not should create a transaction
+  ✓ should delete conta
+  ✓ not should delete conta
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+  Tests:  15 passed
+  Time:   0.90s
 
-## Security Vulnerabilities
+Rolling back: 2021_04_17_024409_transacao
+Rolled back:  2021_04_17_024409_transacao (10.29ms)
+Rolling back: 2021_04_16_231514_conta
+Rolled back:  2021_04_16_231514_conta (7.99ms)
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+### Execução
 
-## License
+Para executar o projeto deve-se executar o seguinte comando:
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+```bash
+$ php artisan serve
+```
+
+Esse comando fará com que o projeto comece a ser executado na porta 8000
