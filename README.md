@@ -112,6 +112,18 @@ Rolled back:  2021_04_16_231514_conta (7.99ms)
 
 ### Execução
 
+Inicialmente é necessário ter todas as tabelas no banco de dados, para isso é necessário executar
+
+```bash
+$ php artisan migrate
+```
+
+Para inserir dados iniciais, é necessário executar o comando dos sedeers
+
+```bash
+$ php artisan db:seed
+```
+
 Para executar o projeto deve-se executar o seguinte comando:
 
 ```bash
